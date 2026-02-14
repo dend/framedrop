@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Den.Dev.FrameDrop.CLI/Den.Dev.FrameDrop.CLI.csproj" />
+  <Project Path="Den.Dev.FrameDrop/Den.Dev.FrameDrop.csproj" />
+</Solution>
