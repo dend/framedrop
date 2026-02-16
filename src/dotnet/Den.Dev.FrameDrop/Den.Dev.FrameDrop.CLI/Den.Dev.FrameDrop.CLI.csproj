@@ -6,7 +6,22 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<AssemblyName>framedrop</AssemblyName>
 		<RootNamespace>Den.Dev.FrameDrop.CLI</RootNamespace>
+
+		<!-- NuGet tool packaging -->
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>framedrop</ToolCommandName>
+		<PackageId>Den.Dev.FrameDrop.CLI</PackageId>
+		<Version>0.0.1</Version>
+		<Authors>Den Delimarsky</Authors>
+		<Description>A cross-platform CLI tool for downloading Xbox screenshots and video recordings from Xbox cloud storage.</Description>
+		<PackageProjectUrl>https://github.com/dend/framedrop</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/dend/framedrop</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Include="../../../../README.md" Pack="true" PackagePath="/" />
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Den.Dev.FrameDrop\Den.Dev.FrameDrop.csproj" />
 	</ItemGroup>

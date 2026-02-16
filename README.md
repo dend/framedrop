@@ -20,7 +20,7 @@ The **CLI** is the primary way to use FrameDrop — it handles authentication, l
 
 ## Authentication note
 
-FrameDrop uses the Entra ID client application ID for the **Xbox App for Windows** (`000000004424da1f`). The mediahub APIs that serve screenshots and game clips require permissions that are not granted to third-party registered applications, so we reuse the first-party Xbox App identity.
+FrameDrop uses the Entra ID client application ID for the **Xbox App for Windows** (`000000004424da1f`). The `mediahub` APIs that serve screenshots and game clips require permissions that are not granted to third-party registered applications, so we reuse the first-party Xbox App identity.
 
 When you sign in, the browser will redirect to `https://login.live.com/oauth20_desktop.srf?code=<CODE>&...`. Because this is a desktop redirect URI, the page will likely show an error or go blank — that's expected. To grab the authorization code:
 
