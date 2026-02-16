@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Den.Dev.FrameDrop.Desktop.Views.LoginWindow"
+        Title="FrameDrop — Log In"
+        Width="500" Height="320"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False">
+    <StackPanel Margin="24" Spacing="12">
+        <TextBlock Text="Sign in to Xbox Live"
+                   FontSize="20" FontWeight="Bold" />
+
+        <TextBlock Text="Your browser has been opened to sign in. If it didn't open, click the link below:"
+                   TextWrapping="Wrap" />
+
+        <TextBlock x:Name="OAuthUrlText"
+                   Foreground="#0078D4"
+                   Cursor="Hand"
+                   TextDecorations="Underline"
+                   TextWrapping="Wrap"
+                   FontSize="12" />
+
+        <TextBlock Text="After signing in, copy the authorization code from the redirect URL and paste it below:"
+                   TextWrapping="Wrap" />
+
+        <TextBox x:Name="CodeTextBox"
+                 Watermark="Authorization code" />
+
+        <TextBlock x:Name="StatusText"
+                   Foreground="Gray"
+                   FontSize="12" />
+
+        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+            <Button x:Name="SubmitButton" Content="Submit" />
+            <Button x:Name="CancelButton" Content="Cancel" />
+        </StackPanel>
+    </StackPanel>
+</Window>

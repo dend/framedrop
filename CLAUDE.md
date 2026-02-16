@@ -33,17 +33,27 @@ src/dotnet/Den.Dev.FrameDrop/
 │       ├── CaptureType.cs                     # Enum: Screenshot, Video
 │       ├── FrameDropConfiguration.cs           # Auth constants + storage paths
 │       └── FrameDropTokenCache.cs              # Flattened token cache for JSON serialization
-└── Den.Dev.FrameDrop.CLI/              # Console app
-    ├── Program.cs                             # System.CommandLine root command
-    ├── Commands/
-    │   ├── AuthCommand.cs                     # login (with --verbose), status, logout
-    │   ├── ListCommand.cs                     # Stub - catches NotImplementedException
-    │   └── DownloadCommand.cs                 # Stub - catches NotImplementedException
+├── Den.Dev.FrameDrop.CLI/              # Console app
+│   ├── Program.cs                             # System.CommandLine root command
+│   ├── Commands/
+│   │   ├── AuthCommand.cs                     # login (with --verbose), status, logout
+│   │   ├── ListCommand.cs                     # Stub - catches NotImplementedException
+│   │   └── DownloadCommand.cs                 # Stub - catches NotImplementedException
+│   ├── Services/
+│   │   ├── SettingsService.cs
+│   │   └── VerboseLoggingHandler.cs           # DelegatingHandler for HTTP debug logging
+│   └── Models/
+│       └── AppSettings.cs
+└── Den.Dev.FrameDrop.Desktop/          # Avalonia tray app (background sync)
+    ├── Program.cs                             # Entry point, builds Avalonia app
+    ├── App.axaml / App.axaml.cs               # TrayIcon setup, ShutdownMode.OnExplicitShutdown
     ├── Services/
-    │   ├── SettingsService.cs
-    │   └── VerboseLoggingHandler.cs           # DelegatingHandler for HTTP debug logging
-    └── Models/
-        └── AppSettings.cs
+    │   ├── AuthService.cs                     # Wraps SISUSessionManager + EncryptedFileTokenStore
+    │   └── SyncService.cs                     # Background sync loop (15-min interval)
+    ├── ViewModels/
+    │   └── TrayViewModel.cs                   # Drives tray menu: status text, last sync, menu state
+    └── Views/
+        └── LoginWindow.axaml                  # Minimal OAuth code entry window
 ```
 
 ## Build & Run
@@ -57,6 +67,7 @@ dotnet run --project Den.Dev.FrameDrop.CLI -- auth status
 dotnet run --project Den.Dev.FrameDrop.CLI -- auth logout
 dotnet run --project Den.Dev.FrameDrop.CLI -- list
 dotnet run --project Den.Dev.FrameDrop.CLI -- download
+dotnet run --project Den.Dev.FrameDrop.Desktop               # Tray app (background sync)
 ```
 
 ## Conventions
@@ -68,6 +79,8 @@ dotnet run --project Den.Dev.FrameDrop.CLI -- download
 - **Console UI:** `Spectre.Console` (0.49.1)
 - **Auth library:** `Den.Dev.Conch` (0.0.2) from NuGet
 - **CLI assembly name:** `framedrop` (so the executable is `framedrop.exe`/`framedrop`)
+- **Desktop UI framework:** `Avalonia` (11.x) — cross-platform tray icon support
+- **Desktop assembly name:** `framedrop-desktop`
 
 ## Key Architecture Decisions
 
@@ -103,7 +116,12 @@ TokenType:   code
 Offers:      ["service::user.auth.xboxlive.com::MBI_SSL"]
 ```
 
+### Desktop App (Tray-Based Background Sync)
+The desktop app runs as a tray icon with no main window (`ShutdownMode.OnExplicitShutdown`). It uses `SyncService` to periodically (every 15 minutes) list all Xbox captures and download new ones to `~/Pictures/FrameDrop`. The tray context menu shows sync status, last sync time, and controls (Sync Now, Pause/Resume, Open Folder, Log In/Out, Quit). Authentication uses the same `EncryptedFileTokenStore` as the CLI — tokens are shared between both apps. Login opens a small `LoginWindow` where the user pastes the OAuth authorization code after authenticating in their browser. The tray icon is a 32x32 Xbox-green square generated programmatically via `WriteableBitmap`.
+
 ## What's Not Done Yet
 
-- **Desktop app** — deferred until CLI is solid.
 - **Tests** — no test project yet.
+- **Desktop: custom tray icon** — currently a solid green square; replace with proper icon asset.
+- **Desktop: settings UI** — sync interval and output directory are hardcoded defaults.
+- **Desktop: auto-start on login** — platform-specific (registry on Windows, `~/.config/autostart/` on Linux).
