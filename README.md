@@ -14,6 +14,21 @@ A cross-platform library and tool written on top of .NET for downloading Xbox sc
 > - I bear **no responsibility** for any account bans, restrictions, suspensions, or other consequences that may result from using this library
 > - You accept **full responsibility** for how you choose to use this library and any actions taken with it
 
+## Getting started
+
+The **CLI** is the primary way to use FrameDrop — it handles authentication, listing, and bulk downloading of your Xbox captures in one tool.
+
+## Authentication note
+
+FrameDrop uses the Entra ID client application ID for the **Xbox App for Windows** (`000000004424da1f`). The mediahub APIs that serve screenshots and game clips require permissions that are not granted to third-party registered applications, so we reuse the first-party Xbox App identity.
+
+When you sign in, the browser will redirect to `https://login.live.com/oauth20_desktop.srf?code=<CODE>&...`. Because this is a desktop redirect URI, the page will likely show an error or go blank — that's expected. To grab the authorization code:
+
+1. Open your browser's developer tools (**F12**) before signing in.
+2. Switch to the **Network** tab.
+3. After signing in, look for the request to `oauth20_desktop.srf`.
+4. Copy the `code` query parameter from that URL and paste it back into FrameDrop.
+
 ## Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or later
