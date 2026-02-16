@@ -14,9 +14,13 @@ A cross-platform library and tool written on top of .NET for downloading Xbox sc
 > - I bear **no responsibility** for any account bans, restrictions, suspensions, or other consequences that may result from using this library
 > - You accept **full responsibility** for how you choose to use this library and any actions taken with it
 
-## Getting started
+## Install
 
-The **CLI** is the primary way to use FrameDrop — it handles authentication, listing, and bulk downloading of your Xbox captures in one tool.
+```bash
+dotnet tool install -g Den.Dev.FrameDrop.CLI
+```
+
+Once installed, the `framedrop` command is available globally.
 
 ## Authentication note
 
